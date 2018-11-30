@@ -3,3 +3,8 @@
 
 # Ignore Gradle build output directory
 build
+
+# idea
+Advent_of_code_2018.iml
+Advent_of_code_2018.ipr
+Advent_of_code_2018.iws
