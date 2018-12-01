@@ -4,6 +4,8 @@ import Advent_of_code_2018.days.Day;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 public class Day1 implements Day {
@@ -22,7 +24,7 @@ public class Day1 implements Day {
                 .map((Integer::parseInt))
                 .collect(Collectors.toList());
 
-        var visited = new ArrayList<>();
+        var visited = new TreeSet<Integer>();
         int current = 0;
         visited.add(current);
 
