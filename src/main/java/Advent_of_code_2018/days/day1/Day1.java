@@ -43,7 +43,7 @@ public class Day1 implements Day {
 
     @Override
     public int getDay() {
-        return 0;
+        return 1;
     }
 
     @Override
