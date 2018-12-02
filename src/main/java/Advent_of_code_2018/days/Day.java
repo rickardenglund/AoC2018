@@ -5,6 +5,8 @@ public interface Day {
     Object getResultP2(String input);
     int getDay();
     String getInput1();
-    String getInput2();
+    default String getInput2() {
+        return getInput1();
+    }
 
 }
