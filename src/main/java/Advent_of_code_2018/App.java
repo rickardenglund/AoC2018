@@ -9,10 +9,12 @@ import Advent_of_code_2018.days.day2.Day2;
 import Advent_of_code_2018.days.day3.Day3;
 import com.google.common.base.Stopwatch;
 
-public class App {
-    public static void main(String[] args) {
-        Day day = new Day3();
+import java.io.Console;
+import java.io.IOException;
 
+public class App {
+    public static void run() {
+        Day day = new Day3();
         Stopwatch timer = Stopwatch.createUnstarted();
 
         timer.start();
@@ -29,6 +31,10 @@ public class App {
         System.out.println("P1: " + resultP1);
         System.out.println("P2: " + resultP2);
         System.out.println("Time: " + split1 + ", " + split2);
+    }
+
+    public static void main(String[] args) {
+        new App().run();
     }
 
 }

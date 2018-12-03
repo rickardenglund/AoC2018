@@ -1,7 +1,9 @@
 package Advent_of_code_2018.days.day3;
 
 import Advent_of_code_2018.days.Day;
+import Advent_of_code_2018.util.Tuple;
 
+import java.awt.geom.Dimension2D;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -13,7 +15,7 @@ public class Day3 implements Day {
         String[] clothDescriptions = input.split("\n");
         List<Claim> claims = Arrays.stream(clothDescriptions).map(it -> createClaim(it)).collect(Collectors.toList());
 
-        String[][] sheet = new String[getMaxWidth(claims)][getMaxHeight(claims)];
+        String[][] sheet = createSheet(claims);
 
         claims.forEach(claim -> insert(sheet, claim, claims));
 
@@ -26,6 +28,13 @@ public class Day3 implements Day {
         return count;
     }
 
+    private String[][] createSheet(List<Claim> claims) {
+        Tuple tuple = getDimensions(claims);
+
+        return new String[tuple.getMaxWidth()][tuple.getMaxHeight()];
+    }
+
+
     void insert(String[][] sheet, Claim claim, List<Claim> claims) {
         for (int x = claim.getXpos(); x < claim.getXpos() + claim.getWidth(); x++) {
             for (int y = claim.getYpos(); y < claim.getYpos() + claim.getHeight(); y++) {
@@ -33,7 +42,7 @@ public class Day3 implements Day {
                 else {
                     claim.setBroken();
                     if (!sheet[x][y].equals("X")) {
-                        getClaim(claims, sheet[x][y]).setBroken();
+                        getClaim(claims, Integer.parseInt(sheet[x][y])).setBroken();
                     }
                     sheet[x][y] = "X";
                 }
@@ -41,39 +50,34 @@ public class Day3 implements Day {
         }
     }
 
-    private Claim getClaim(List<Claim> claims, String id) {
-        for (var claim : claims) {
-            if (String.valueOf(claim.getId()).equals(id)) return claim;
-        }
-        throw new IllegalStateException("Invalid id: " + id);
+    private Claim getClaim(List<Claim> claims, int id) {
+        Optional<Claim> firstClaim = claims.stream()
+                .filter(claim -> claim.getId() == id)
+                .findFirst();
+
+        return firstClaim.orElseThrow();
     }
 
-    private int getMaxWidth(List<Claim> claims) {
+    private Tuple getDimensions(List<Claim> claims) {
         int maxWidth = 0;
-        for (var claim : claims) {
-            maxWidth = Math.max(claim.getXpos() + claim.getWidth(), maxWidth);
-        }
-        return maxWidth;
-    }
-
-    private int getMaxHeight(List<Claim> claims) {
         int maxHeight = 0;
         for (var claim : claims) {
+            maxWidth = Math.max(claim.getXpos() + claim.getWidth(), maxWidth);
             maxHeight = Math.max(claim.getYpos() + claim.getHeight(), maxHeight);
         }
-        return maxHeight;
+        return new Tuple(maxWidth, maxHeight);
     }
 
     public Claim createClaim(String description) {
         String[] parts = description.split(" ");
         int id = Integer.parseInt(parts[0].substring(1));
-        int xpos = Integer.parseInt(parts[2].split(",")[0]);
-        String yposStr = parts[2].split(",")[1];
-        int ypos = Integer.parseInt(yposStr.substring(0, yposStr.length() - 1));
+        int xPos = Integer.parseInt(parts[2].split(",")[0]);
+        String yPosStr = parts[2].split(",")[1];
+        int yPos = Integer.parseInt(yPosStr.substring(0, yPosStr.length() - 1));
         int width = Integer.parseInt(parts[3].split("x")[0]);
         int height = Integer.parseInt(parts[3].split("x")[1]);
 
-        return new Claim(id, xpos, ypos, width, height);
+        return new Claim(id, xPos, yPos, width, height);
     }
 
     @Override
@@ -81,7 +85,7 @@ public class Day3 implements Day {
         String[] clothDescriptions = input.split("\n");
         List<Claim> claims = Arrays.stream(clothDescriptions).map(it -> createClaim(it)).collect(Collectors.toList());
 
-        String[][] sheet = new String[getMaxWidth(claims)][getMaxHeight(claims)];
+        String[][] sheet = createSheet(claims);
         claims.forEach(claim -> insert(sheet, claim, claims));
 
 

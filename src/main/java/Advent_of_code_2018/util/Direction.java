@@ -1,5 +1,5 @@
-package Advent_of_code_2018.days.day1;
+package Advent_of_code_2018.util;
 
 public enum Direction {
-    NORTH, EAST, SOUTH, WEST;
+    NORTH, EAST, SOUTH, WEST
 }
