@@ -8,12 +8,14 @@ public class Claim {
     private final int height;
     private boolean broken = false;
 
-    public Claim(int id, int xpos, int ypos, int width, int height) {
-        this.id = id;
-        this.xpos = xpos;
-        this.ypos = ypos;
-        this.width = width;
-        this.height = height;
+    public Claim(String description) {
+        String[] parts = description.split(" ");
+        id = Integer.parseInt(parts[0].substring(1));
+        xpos = Integer.parseInt(parts[2].split(",")[0]);
+        String yPosStr = parts[2].split(",")[1];
+        ypos = Integer.parseInt(yPosStr.substring(0, yPosStr.length() - 1));
+        width = Integer.parseInt(parts[3].split("x")[0]);
+        height = Integer.parseInt(parts[3].split("x")[1]);
     }
 
     @Override
@@ -46,12 +48,4 @@ public class Claim {
         return height;
     }
 
-
-    public void setBroken() {
-        broken = true;
-    }
-
-    public boolean isBroken() {
-        return broken;
-    }
 }

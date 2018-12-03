@@ -3,8 +3,8 @@ package Advent_of_code_2018.days.day3;
 import Advent_of_code_2018.days.Day;
 import org.junit.Test;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import static org.junit.Assert.*;
 
@@ -34,19 +34,21 @@ public class Day3Test {
     public void insertClaim() {
         Day3 sut = new Day3();
         Claim claim = sut.createClaim("#2 @ 3,1: 4x4");
-        String[][] sheet = new String[50][50];
-        sut.insert(sheet, claim, List.of(claim));
+        SortedSet<Integer> broken = new TreeSet<>();
+        int[][] sheet = new int[50][50];
+        sut.insert(sheet, claim, broken);
 
-        assertEquals("2", sheet[3][1]);
+        assertEquals(2, sheet[3][1]);
     }
 
     @Test
     public void insertIntersectClaim() {
         Day3 sut = new Day3();
         Claim claim = sut.createClaim("#1 @ 7,1: 4x4");
-        String[][] sheet = new String[50][50];
-        sut.insert(sheet, claim, List.of(claim));
-        sut.insert(sheet, claim, List.of(claim));
-        assertEquals("X", sheet[7][1]);
+        SortedSet<Integer> broken = new TreeSet<>();
+        int[][] sheet = new int[50][50];
+        sut.insert(sheet, claim, broken);
+        sut.insert(sheet, claim, broken);
+        assertEquals(-1, sheet[7][1]);
     }
 }

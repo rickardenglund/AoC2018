@@ -3,59 +3,50 @@ package Advent_of_code_2018.days.day3;
 import Advent_of_code_2018.days.Day;
 import Advent_of_code_2018.util.Tuple;
 
-import java.awt.geom.Dimension2D;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Day3 implements Day {
     @Override
     public Object getResultP1(String input) {
         String[] clothDescriptions = input.split("\n");
-        List<Claim> claims = Arrays.stream(clothDescriptions).map(it -> createClaim(it)).collect(Collectors.toList());
+        List<Claim> claims = Arrays.stream(clothDescriptions)
+                .map(this::createClaim)
+                .collect(Collectors.toList());
+        SortedSet<Integer> broken = new TreeSet<>();
 
-        String[][] sheet = createSheet(claims);
+        int[][] sheet = createSheet(claims);
 
-        claims.forEach(claim -> insert(sheet, claim, claims));
+        claims.forEach(claim -> insert(sheet, claim, broken));
 
-        int count = 0;
-        for (int x = 0; x < sheet.length; x++) {
-            for (int y = 0; y < sheet[x].length; y++) {
-                if (sheet[x][y] != null && sheet[x][y].equals("X")) count++;
-            }
-        }
-        return count;
+        return (int)Arrays.stream(sheet)
+                .flatMapToInt(Arrays::stream)
+                .filter(x -> x == -1)
+                .count();
     }
 
-    private String[][] createSheet(List<Claim> claims) {
+    private int[][] createSheet(List<Claim> claims) {
         Tuple tuple = getDimensions(claims);
 
-        return new String[tuple.getMaxWidth()][tuple.getMaxHeight()];
+        return new int[tuple.getMaxWidth()][tuple.getMaxHeight()];
     }
 
 
-    void insert(String[][] sheet, Claim claim, List<Claim> claims) {
+    void insert(int[][] sheet, Claim claim, SortedSet<Integer> broken) {
         for (int x = claim.getXpos(); x < claim.getXpos() + claim.getWidth(); x++) {
             for (int y = claim.getYpos(); y < claim.getYpos() + claim.getHeight(); y++) {
-                if (sheet[x][y] == null) sheet[x][y] = String.valueOf(claim.getId());
+                if (sheet[x][y] == 0) {
+                    sheet[x][y] = claim.getId();
+                }
                 else {
-                    claim.setBroken();
-                    if (!sheet[x][y].equals("X")) {
-                        getClaim(claims, Integer.parseInt(sheet[x][y])).setBroken();
+                    broken.add(claim.getId());
+                    if (sheet[x][y] != -1) {
+                        broken.add(sheet[x][y]);
                     }
-                    sheet[x][y] = "X";
+                    sheet[x][y] = -1;
                 }
             }
         }
-    }
-
-    private Claim getClaim(List<Claim> claims, int id) {
-        Optional<Claim> firstClaim = claims.stream()
-                .filter(claim -> claim.getId() == id)
-                .findFirst();
-
-        return firstClaim.orElseThrow();
     }
 
     private Tuple getDimensions(List<Claim> claims) {
@@ -69,30 +60,26 @@ public class Day3 implements Day {
     }
 
     public Claim createClaim(String description) {
-        String[] parts = description.split(" ");
-        int id = Integer.parseInt(parts[0].substring(1));
-        int xPos = Integer.parseInt(parts[2].split(",")[0]);
-        String yPosStr = parts[2].split(",")[1];
-        int yPos = Integer.parseInt(yPosStr.substring(0, yPosStr.length() - 1));
-        int width = Integer.parseInt(parts[3].split("x")[0]);
-        int height = Integer.parseInt(parts[3].split("x")[1]);
 
-        return new Claim(id, xPos, yPos, width, height);
+
+        return new Claim(description);
     }
 
     @Override
     public Integer getResultP2(String input) {
         String[] clothDescriptions = input.split("\n");
-        List<Claim> claims = Arrays.stream(clothDescriptions).map(it -> createClaim(it)).collect(Collectors.toList());
+        List<Claim> claims = Arrays.stream(clothDescriptions)
+                .map(this::createClaim)
+                .collect(Collectors.toList());
+        SortedSet<Integer> broken = new TreeSet<>();
 
-        String[][] sheet = createSheet(claims);
-        claims.forEach(claim -> insert(sheet, claim, claims));
+        int[][] sheet = createSheet(claims);
+        claims.forEach(claim -> insert(sheet, claim, broken));
 
-
-        Optional<Claim> first = claims.stream().filter(claim -> !claim.isBroken()).findFirst();
-        if (first.isPresent()) {
-            return first.get().getId();
-        } else return -1;
+        Optional<Claim> first = claims.stream()
+                .filter(claim -> !broken.contains(claim.getId()))
+                .findFirst();
+        return first.map(Claim::getId).orElseThrow();
     }
 
     @Override
