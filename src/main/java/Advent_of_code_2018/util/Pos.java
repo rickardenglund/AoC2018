@@ -3,17 +3,25 @@ package Advent_of_code_2018.util;
 import java.util.Objects;
 
 public class Pos {
+    private int id;
     private int x;
     private int y;
 
     public Pos(int x, int y) {
         this.x = x;
         this.y = y;
+        this.id = -1;
     }
 
     public Pos() {
         x = 0;
         y = 0;
+        id = -1;
+    }
+
+    public Pos(int x, int y, int id) {
+        this(x, y);
+        this.id = id;
     }
 
     public void walk(Direction dir, int steps) {
@@ -43,7 +51,7 @@ public class Pos {
 
     @Override
     public String toString() {
-        return "Pos{" + + x + ", " + y +
+        return "Pos{" + +x + ", " + y +
                 '}';
     }
 
@@ -68,5 +76,13 @@ public class Pos {
 
     public int getX() {
         return x;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public int getManhattanDistance(Pos other) {
+        return Math.abs(getX() - other.getX()) + Math.abs(getY() - other.getY());
     }
 }
