@@ -9,8 +9,8 @@ import Advent_of_code_2018.days.day7.Day7;
 import com.google.common.base.Stopwatch;
 
 public class App {
-    public void run() {
-        Day day = new Day7();
+    private void run() {
+        Day day = new Day5();
         Stopwatch timer = Stopwatch.createUnstarted();
 
         timer.start();

@@ -1,6 +1,7 @@
 package Advent_of_code_2018.days.day5;
 
 import Advent_of_code_2018.days.Day;
+import com.google.common.base.Stopwatch;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -24,7 +25,7 @@ public class Day5 implements Day {
                         .map(Part::new)
                         .collect(Collectors.toCollection(LinkedList::new));
 
-        Set<Integer> types = new HashSet();
+        Set<Integer> types = new HashSet<>();
         for (Part part : polymer) {
             types.add(part.getType());
         }
@@ -45,13 +46,41 @@ public class Day5 implements Day {
     }
 
     private void react(LinkedList<Part> polymer) {
-        for (int i = 0; i < polymer.size() - 1; i++) {
-            while (i + 1 < polymer.size() && polymer.get(i).reactsWith(polymer.get(i + 1))) {
-                polymer.remove(i + 1);
-                polymer.remove(i);
-                i = Math.max(0, --i);
+        ListIterator<Part> iterator = polymer.listIterator();
+
+        while (hasTwoMore(iterator)) {
+            while (hasTwoMore(iterator) && nextReacts(iterator)) {
+                removeTwo(iterator);
+                if (iterator.hasPrevious()) iterator.previous();
             }
+            if (iterator.hasNext()) iterator.next();
         }
+    }
+
+    private void removeTwo(ListIterator<Part> iterator) {
+        iterator.next();
+        iterator.remove();
+        iterator.next();
+        iterator.remove();
+    }
+
+    private boolean nextReacts(ListIterator<Part> iterator) {
+        boolean reacts = iterator.next().reactsWith(iterator.next());
+        iterator.previous();
+        iterator.previous();
+        return reacts;
+    }
+
+    private boolean hasTwoMore(ListIterator<Part> iterator) {
+        if (iterator.hasNext()) {
+            iterator.next();
+        } else {
+            return false;
+        }
+
+        boolean result =  iterator.hasNext();
+        iterator.previous();
+        return result;
     }
 
     @Override
