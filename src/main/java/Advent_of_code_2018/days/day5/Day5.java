@@ -8,10 +8,10 @@ import java.util.stream.Collectors;
 public class Day5 implements Day {
     @Override
     public Object getResultP1(String input) {
-        LinkedList<Part> polymer = new LinkedList<>();
-        for (Part part : Arrays.stream(input.split("")).map(it -> new Part(it)).collect(Collectors.toList())) {
-            polymer.add(part);
-        }
+        LinkedList<Part> polymer =
+                Arrays.stream(input.split(""))
+                        .map(Part::new)
+                        .collect(Collectors.toCollection(LinkedList::new));
 
         react(polymer);
         return polymer.size();
@@ -19,51 +19,40 @@ public class Day5 implements Day {
 
     @Override
     public Object getResultP2(String input) {
-        LinkedList<Part> polymer = new LinkedList<>();
-        for (Part part : Arrays.stream(input.split("")).map(it -> new Part(it)).collect(Collectors.toList())) {
-            polymer.add(part);
-        }
+        LinkedList<Part> polymer =
+                Arrays.stream(input.split(""))
+                        .map(Part::new)
+                        .collect(Collectors.toCollection(LinkedList::new));
 
         Set<Integer> types = new HashSet();
-        for (Part part: polymer) {
+        for (Part part : polymer) {
             types.add(part.getType());
         }
 
-        int min = Integer.MAX_VALUE;
-        for (int type: types) {
-            LinkedList<Part> filteredPolymer = polymer.stream()
-                    .filter(part -> part.getType() != type)
-                    .collect(Collectors.toCollection(LinkedList::new));
-            react(filteredPolymer);
-            min = Math.min(filteredPolymer.size(), min);
-        }
+        Optional<Integer> min = types.parallelStream()
+                .map(type -> reactFiltered(polymer, type))
+                .min(Integer::compareTo);
 
-        return min;
+        return min.get();
+    }
+
+    private int reactFiltered(LinkedList<Part> polymer, int type) {
+        LinkedList<Part> filteredPolymer = polymer.stream()
+                .filter(part -> part.getType() != type)
+                .collect(Collectors.toCollection(LinkedList::new));
+        react(filteredPolymer);
+        return filteredPolymer.size();
     }
 
     private void react(LinkedList<Part> polymer) {
-        boolean done = false;
-        int startFrom = 0;
-        while (!done) {
-            boolean removed = false;
-            for (int i = startFrom; i < polymer.size() - 1; i++) {
-                Part first = polymer.get(i);
-                Part second = polymer.get(i + 1);
-                if (first.reactsWith(second)) {
-                    polymer.remove(i + 1);
-                    polymer.remove(i);
-                    removed = true;
-                    startFrom = Math.max(i - 1, 0);
-                    break;
-
-                }
+        for (int i = 0; i < polymer.size() - 1; i++) {
+            while (i + 1 < polymer.size() && polymer.get(i).reactsWith(polymer.get(i + 1))) {
+                polymer.remove(i + 1);
+                polymer.remove(i);
+                i = Math.max(0, --i);
             }
-            if (!removed)
-                done = true;
         }
     }
-
-
 
     @Override
     public int getDay() {

@@ -4,20 +4,13 @@
 package Advent_of_code_2018;
 
 import Advent_of_code_2018.days.Day;
-import Advent_of_code_2018.days.day1.Day1;
-import Advent_of_code_2018.days.day2.Day2;
-import Advent_of_code_2018.days.day3.Day3;
-import Advent_of_code_2018.days.day4.Day4;
 import Advent_of_code_2018.days.day5.Day5;
-import Advent_of_code_2018.days.day6.Day6;
+import Advent_of_code_2018.days.day7.Day7;
 import com.google.common.base.Stopwatch;
 
-import java.io.Console;
-import java.io.IOException;
-
 public class App {
-    public static void run() {
-        Day day = new Day6();
+    public void run() {
+        Day day = new Day7();
         Stopwatch timer = Stopwatch.createUnstarted();
 
         timer.start();
