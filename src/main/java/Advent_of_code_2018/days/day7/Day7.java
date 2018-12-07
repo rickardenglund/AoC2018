@@ -1,15 +1,17 @@
 package Advent_of_code_2018.days.day7;
 
 import Advent_of_code_2018.days.Day;
-import Advent_of_code_2018.util.Pos;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Day7 implements Day {
     private int nWorkers = 5;
+    private int workBaseCost = 60;
+
+    public void setWorkBaseCost(int workBaseCost) {
+        this.workBaseCost = workBaseCost;
+    }
 
     @Override
     public Object getResultP1(String input) {
@@ -17,28 +19,76 @@ public class Day7 implements Day {
 
         StringBuilder sb = new StringBuilder();
         while (depGraph.size() > 0) {
-            sb.append(depGraph.getNext());
+            String workId = depGraph.getAvailableWork().get(0);
+            sb.append(workId);
+            depGraph.perform(workId);
         }
         return sb.toString();
     }
 
     @Override
     public Object getResultP2(String input) {
-        DepGraph depGraph = new DepGraph(input.split("\n"));
+        DepGraph work = new DepGraph(input.split("\n"));
 
-        while (depGraph.size() > 0) {
-
-            int sec = letterToSeconds(depGraph.getNext());
+        int time = 0;
+        List<Worker> workers = createWorkers(nWorkers, workBaseCost);
+        while (work.size() > 0) {
+            assignWork(workers, work);
+            var workTime = getTimeToNextAvailableWorker(workers);
+            time += workTime;
+            work(workers, workTime, work);
         }
 
-
-        return null;
+        return time;
     }
 
-    public int letterToSeconds(String next) {
-        return 0;
+    private void work(List<Worker> workers, int time, DepGraph work) {
+        workers.forEach(worker-> {
+            worker.doWork(time);
+            if (worker.isDone()) {
+                work.perform(worker.getWorkId());
+            }
+        });
     }
 
+    private static List<Worker> createWorkers(int nWorkers, int workBaseCost) {
+        List<Worker> list = new ArrayList<>();
+        for (int i = 0; i < nWorkers; i++) {
+            list.add(new Worker(workBaseCost));
+        }
+        return list;
+    }
+
+    private int getTimeToNextAvailableWorker(List<Worker> workers) {
+        return workers.stream()
+                .filter(worker -> worker.getWorkLeft() != 0)
+                .min(Comparator.comparingInt(Worker::getWorkLeft))
+                .get()
+                .getWorkLeft();
+    }
+
+    private void assignWork(List<Worker> workers, DepGraph work) {
+        List<String> availableWork = filterActiveWork(work.getAvailableWork(), workers);
+        for (var workId: availableWork) {
+            Optional<Worker> worker = getAvailableWorker(workers);
+            if (worker.isPresent()) {
+                worker.get().assignWork(workId);
+            } else {
+                break;
+            }
+        }
+    }
+
+    private List<String> filterActiveWork(List<String> availableWork, List<Worker> workers) {
+        List<String> activeWork = workers.stream().map(worker -> worker.getWorkId()).collect(Collectors.toList());
+        return availableWork.stream().filter(workId -> !activeWork.contains(workId)).collect(Collectors.toList());
+    }
+
+    private Optional<Worker> getAvailableWorker(List<Worker> workers) {
+        return workers.stream()
+                .filter(worker -> worker.getWorkLeft() == 0)
+                .findFirst();
+    }
 
     public void setNWorkers(int n) {
         nWorkers = n;

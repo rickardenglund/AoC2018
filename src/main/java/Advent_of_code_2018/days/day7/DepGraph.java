@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class DepGraph {
     private List<Node> nodes = new LinkedList<>();
@@ -47,22 +48,25 @@ public class DepGraph {
         return nodes.size();
     }
 
-    public String getNext() {
-        for (int i = 0; i < nodes.size(); i++) {
-            Node node = nodes.get(i);
-            if (!node.hasDependencies()) {
-                String id = node.getId();
-                nodes.remove(node);
-                perform(id);
-                return id;
-            }
-        }
-        throw new RuntimeException("No Available nodes");
+    public List<String> getAvailableWork() {
+        return nodes.stream()
+                .filter(node -> !node.hasDependencies())
+                .map(Node::getId)
+                .sorted()
+                .collect(Collectors.toList());
     }
 
-    private void perform(String id) {
+
+    void perform(Worker worker) {
+        String id = worker.getWorkId();
+        worker.reset();
+        perform(id);
+    }
+
+    public void perform(String id) {
         for (var node: nodes) {
             node.removeDependency(id);
         }
+        nodes.removeIf(node -> node.getId().equals(id));
     }
 }

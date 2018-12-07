@@ -23,9 +23,20 @@ public class Day7Test {
     @Test
     public void p2() {
         int expected = 15;
-        Day sut = new Day7();
+        var sut = new Day7();
+        sut.setNWorkers(2);
+        sut.setWorkBaseCost(0);
 
-        assertEquals(expected, sut.getResultP1(input));
+        assertEquals(expected, sut.getResultP2(input));
     }
 
+    @Test
+    public void p260() {
+        int expected = 258;
+        var sut = new Day7();
+        sut.setNWorkers(2);
+        sut.setWorkBaseCost(60);
+
+        assertEquals(expected, sut.getResultP2(input));
+    }
 }
