@@ -1,86 +1,64 @@
 package Advent_of_code_2018.days.day5;
 
 import Advent_of_code_2018.days.Day;
-import com.google.common.base.Stopwatch;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 
 public class Day5 implements Day {
+    private String res1 = null;
+
     @Override
     public Object getResultP1(String input) {
-        LinkedList<Part> polymer =
-                Arrays.stream(input.split(""))
-                        .map(Part::new)
-                        .collect(Collectors.toCollection(LinkedList::new));
+        return react(new StringBuilder(input));
+    }
 
-        react(polymer);
-        return polymer.size();
+    private int react(StringBuilder sb) {
+        for (int i = 0; i < sb.length() - 1; i++) {
+            Character a = sb.charAt(i);
+            Character b = sb.charAt(i + 1);
+            if (isSameCharacter(a, b) && oppositeCase(a, b)) {
+                sb.delete(i, i + 2);
+                i = Math.max(-1, i - 2);
+            }
+        }
+        res1 = sb.toString();
+        return sb.length();
+    }
+
+    private boolean isSameCharacter(Character a, Character b) {
+        return Character.toUpperCase(a) == Character.toUpperCase(b);
+    }
+
+    private boolean oppositeCase(Character a, Character b) {
+        return Character.isUpperCase(a) != Character.isUpperCase(b);
     }
 
     @Override
     public Object getResultP2(String input) {
-        LinkedList<Part> polymer =
-                Arrays.stream(input.split(""))
-                        .map(Part::new)
-                        .collect(Collectors.toCollection(LinkedList::new));
+        final String str = res1 != null ? res1 : input;
 
-        Set<Integer> types = new HashSet<>();
-        for (Part part : polymer) {
-            types.add(part.getType());
+        Set<Character> types = new HashSet<>();
+        for (Character part : str.toCharArray()) {
+            types.add(part);
         }
 
-        Optional<Integer> min = types.parallelStream()
-                .map(type -> reactFiltered(polymer, type))
+        Optional<Integer> min = types.stream()
+                .map(type -> react(filter(str, type)))
                 .min(Integer::compareTo);
 
         return min.get();
     }
 
-    private int reactFiltered(LinkedList<Part> polymer, int type) {
-        LinkedList<Part> filteredPolymer = polymer.stream()
-                .filter(part -> part.getType() != type)
-                .collect(Collectors.toCollection(LinkedList::new));
-        react(filteredPolymer);
-        return filteredPolymer.size();
-    }
-
-    private void react(LinkedList<Part> polymer) {
-        ListIterator<Part> iterator = polymer.listIterator();
-
-        while (hasTwoMore(iterator)) {
-            while (hasTwoMore(iterator) && nextReacts(iterator)) {
-                removeTwo(iterator);
-                if (iterator.hasPrevious()) iterator.previous();
+    private StringBuilder filter(String str, Character type) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < str.length(); i++) {
+            if (!isSameCharacter(str.charAt(i), type)) {
+                sb.append(str.charAt(i));
             }
-            if (iterator.hasNext()) iterator.next();
         }
-    }
-
-    private void removeTwo(ListIterator<Part> iterator) {
-        iterator.next();
-        iterator.remove();
-        iterator.next();
-        iterator.remove();
-    }
-
-    private boolean nextReacts(ListIterator<Part> iterator) {
-        boolean reacts = iterator.next().reactsWith(iterator.next());
-        iterator.previous();
-        iterator.previous();
-        return reacts;
-    }
-
-    private boolean hasTwoMore(ListIterator<Part> iterator) {
-        if (iterator.hasNext()) {
-            iterator.next();
-        } else {
-            return false;
-        }
-
-        boolean result =  iterator.hasNext();
-        iterator.previous();
-        return result;
+        return sb;
     }
 
     @Override

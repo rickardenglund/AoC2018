@@ -1,7 +1,5 @@
 package Advent_of_code_2018.days.day5;
 
-import org.checkerframework.checker.units.qual.C;
-
 public class Part {
     private final boolean upper;
     private int type;
