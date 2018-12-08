@@ -33,7 +33,7 @@ public class Day5Test {
     @Test
     public void p1short3() {
         String input = "aabAAB";
-        int expected = 6;
+        int expected = 7;
         Day sut = new Day5();
         assertEquals(expected, sut.getResultP1(input));
     }
