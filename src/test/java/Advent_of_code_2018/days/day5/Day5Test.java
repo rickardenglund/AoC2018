@@ -45,4 +45,11 @@ public class Day5Test {
         Day sut = new Day5();
         assertEquals(expected, sut.getResultP2(input));
     }
+
+    @Test
+    public void test() {
+        char a = 'B';
+        char A = 'b';
+        assertEquals(Math.abs(a - A), 32);
+    }
 }

@@ -9,6 +9,8 @@ import Advent_of_code_2018.days.day7.Day7;
 import Advent_of_code_2018.days.day8.Day8;
 import com.google.common.base.Stopwatch;
 
+import java.util.concurrent.TimeUnit;
+
 public class App {
     private void run() {
         Day day = new Day8();
@@ -31,7 +33,7 @@ public class App {
     }
 
     public static void main(String[] args) {
-        new App().run();
+        App.run();
     }
 
 }

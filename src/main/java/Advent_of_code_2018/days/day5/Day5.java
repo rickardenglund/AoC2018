@@ -7,55 +7,53 @@ import java.util.Optional;
 import java.util.Set;
 
 public class Day5 implements Day {
-    private String res1 = null;
-
     @Override
     public Object getResultP1(String input) {
-        return react(new StringBuilder(input));
+        return react(new StringBuilder(input)).length();
     }
 
-    private int react(StringBuilder sb) {
+    private StringBuilder react(StringBuilder sb) {
         for (int i = 0; i < sb.length() - 1; i++) {
-            Character a = sb.charAt(i);
-            Character b = sb.charAt(i + 1);
-            if (isSameCharacter(a, b) && isOppositeCase(a, b)) {
+            char a = sb.charAt(i);
+            char b = sb.charAt(i + 1);
+            if (isOppositeCase(a, b)) {
                 sb.delete(i, i + 2);
                 i = Math.max(-1, i - 2);
             }
         }
-        res1 = sb.toString();
-        return sb.length();
+        return sb;
     }
 
-    private boolean isSameCharacter(Character a, Character b) {
-        return Character.toUpperCase(a) == Character.toUpperCase(b);
+    private boolean isSameCharacter(char a, char b) {
+        int diff = Math.abs(a - b);
+        return diff == 0 || diff == 32;
     }
 
-    private boolean isOppositeCase(Character a, Character b) {
-        return Character.isUpperCase(a) != Character.isUpperCase(b);
+    private boolean isOppositeCase(char a, char b) {
+        return Math.abs(a - b) == 32;
     }
 
     @Override
     public Object getResultP2(String input) {
-        final String str = res1 != null ? res1 : input;
-
+        var sb = new StringBuilder(input);
         Set<Character> types = new HashSet<>();
-        for (Character part : str.toCharArray()) {
+        for (Character part : input.toCharArray()) {
             types.add(part);
         }
 
+        react(sb);
         Optional<Integer> min = types.stream()
-                .map(type -> react(filter(str, type)))
+                .map(type -> react(copyFilter(sb, type)).length())
                 .min(Integer::compareTo);
 
         return min.get();
     }
 
-    private StringBuilder filter(String str, Character type) {
+    private StringBuilder copyFilter(StringBuilder input, Character type) {
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < str.length(); i++) {
-            if (!isSameCharacter(str.charAt(i), type)) {
-                sb.append(str.charAt(i));
+        for (int i = 0; i < input.length(); i++) {
+            if (!isSameCharacter(input.charAt(i), type)) {
+                sb.append(input.charAt(i));
             }
         }
         return sb;
