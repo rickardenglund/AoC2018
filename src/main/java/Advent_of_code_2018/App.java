@@ -4,15 +4,11 @@
 package Advent_of_code_2018;
 
 import Advent_of_code_2018.days.Day;
-import Advent_of_code_2018.days.day5.Day5;
-import Advent_of_code_2018.days.day7.Day7;
 import Advent_of_code_2018.days.day8.Day8;
 import com.google.common.base.Stopwatch;
 
-import java.util.concurrent.TimeUnit;
-
 public class App {
-    private void run() {
+    private static void run() {
         Day day = new Day8();
         Stopwatch timer = Stopwatch.createUnstarted();
 
