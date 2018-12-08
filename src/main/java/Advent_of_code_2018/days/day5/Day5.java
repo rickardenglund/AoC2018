@@ -18,7 +18,7 @@ public class Day5 implements Day {
         for (int i = 0; i < sb.length() - 1; i++) {
             Character a = sb.charAt(i);
             Character b = sb.charAt(i + 1);
-            if (isSameCharacter(a, b) && oppositeCase(a, b)) {
+            if (isSameCharacter(a, b) && isOppositeCase(a, b)) {
                 sb.delete(i, i + 2);
                 i = Math.max(-1, i - 2);
             }
@@ -31,7 +31,7 @@ public class Day5 implements Day {
         return Character.toUpperCase(a) == Character.toUpperCase(b);
     }
 
-    private boolean oppositeCase(Character a, Character b) {
+    private boolean isOppositeCase(Character a, Character b) {
         return Character.isUpperCase(a) != Character.isUpperCase(b);
     }
 
