@@ -1,19 +1,10 @@
 package Advent_of_code_2018.util;
 
-public class Tuple {
-    private final int maxWidth;
-    private final int maxHeight;
-
-    public Tuple(int maxWidth, int maxHeight) {
-        this.maxWidth = maxWidth;
-        this.maxHeight = maxHeight;
-    }
-
-    public int getMaxWidth() {
-        return maxWidth;
-    }
-
-    public int getMaxHeight() {
-        return maxHeight;
+public class Tuple<X, Y> {
+    public final X x;
+    public final Y y;
+    public Tuple(X x, Y y) {
+        this.x = x;
+        this.y = y;
     }
 }

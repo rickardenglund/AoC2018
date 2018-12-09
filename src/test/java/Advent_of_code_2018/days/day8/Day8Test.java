@@ -68,6 +68,4 @@ public class Day8Test {
         var sut = new Day8();
         assertEquals(expected, sut.getResultP2(input));
     }
-
-
 }

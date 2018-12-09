@@ -5,11 +5,12 @@ package Advent_of_code_2018;
 
 import Advent_of_code_2018.days.Day;
 import Advent_of_code_2018.days.day8.Day8;
+import Advent_of_code_2018.days.day9.Day9;
 import com.google.common.base.Stopwatch;
 
 public class App {
     private static void run() {
-        Day day = new Day8();
+        Day day = new Day9();
         Stopwatch timer = Stopwatch.createUnstarted();
 
         timer.start();

@@ -26,9 +26,9 @@ public class Day3 implements Day {
     }
 
     private int[][] createSheet(List<Claim> claims) {
-        Tuple tuple = getDimensions(claims);
+        Tuple<Integer, Integer> tuple = getDimensions(claims);
 
-        return new int[tuple.getMaxWidth()][tuple.getMaxHeight()];
+        return new int[tuple.x][tuple.y];
     }
 
 
