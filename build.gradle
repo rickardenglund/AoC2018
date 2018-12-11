@@ -39,9 +39,9 @@ dependencies {
 // Define the main class for the application
 mainClassName = 'Advent_of_code_2018.App'
 
-def currentDay = "" + ((LocalDate.now().dayOfMonth) + 3)
+String currentDay = "" + LocalDate.now().dayOfMonth
 
-task genDay(type: Copy) {
+task generateDay(type: Copy) {
     dependsOn 'genResource', 'genTest'
     from 'src/template/java/'
     into 'src/main/java/Advent_of_code_2018/days/day' + currentDay + '/'
