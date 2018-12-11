@@ -8,10 +8,18 @@ public class DayXXTest {
 
     @Test
     public void p1() {
-        String expected = null;
+        String expected = "";
         String input = "";
         var sut = new DayXX();
         assertEquals(expected, sut.getResultP1(input));
+    }
+
+    @Test
+    public void p2() {
+        String expected = "";
+        String input = "";
+        var sut = new DayXX();
+        assertEquals(expected, sut.getResultP2(input));
     }
 
 }

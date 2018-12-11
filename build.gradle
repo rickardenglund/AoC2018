@@ -39,12 +39,14 @@ dependencies {
 // Define the main class for the application
 mainClassName = 'Advent_of_code_2018.App'
 
+def currentDay = "" + ((LocalDate.now().dayOfMonth) + 3)
+
 task genDay(type: Copy) {
     dependsOn 'genResource', 'genTest'
     from 'src/template/java/'
-    into 'src/main/java/Advent_of_code_2018/days/day13/'
-    rename ('DayXX.java', 'Day' +((LocalDate.now().dayOfMonth) + 2) + '.java')
-    filter {line -> line.replaceAll("XX", "" + ((LocalDate.now().dayOfMonth) + 2))}
+    into 'src/main/java/Advent_of_code_2018/days/day' + currentDay + '/'
+    rename ('DayXX.java', 'Day' + currentDay + '.java')
+    filter {line -> line.replaceAll("XX", currentDay)}
 }
 
 task genResource(type: Copy) {
@@ -55,7 +57,7 @@ task genResource(type: Copy) {
 
 task genTest(type: Copy) {
     from 'src/template/test/'
-    into 'src/test/java/Advent_of_code_2018/days/day13/'
-    rename ('DayXXTest.java', 'Day' +((LocalDate.now().dayOfMonth) + 2) + 'Test.java')
-    filter {line -> line.replaceAll("XX", "" + ((LocalDate.now().dayOfMonth) + 2))}
+    into 'src/test/java/Advent_of_code_2018/days/day' + currentDay + '/'
+    rename ('DayXXTest.java', 'Day' + currentDay + 'Test.java')
+    filter {line -> line.replaceAll("XX", currentDay)}
 }
