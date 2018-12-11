@@ -17,6 +17,16 @@ public class Day11Test {
     }
 
     @Test
+    public void p2() {
+        var sut = new Day11();
+        String input = "18";
+
+        assertEquals(90, sut.getResultP2(input).pos.getX());
+        assertEquals(269, sut.getResultP2(input).pos.getY());
+        assertEquals(16, sut.getResultP2(input).size);
+    }
+
+    @Test
     public void p1a() {
         var sut = new Day11();
         String input = "42";
@@ -24,7 +34,6 @@ public class Day11Test {
         assertEquals(21, sut.getResultP1(input).getX());
         assertEquals(61, sut.getResultP1(input).getY());
     }
-
 
     @Test
     public void calcPowerLevelA() {
@@ -65,20 +74,27 @@ public class Day11Test {
     @Test
     public void sumMask() {
         int [][]grid = {{4, 4, 4}, {3, 3, 4}, {1, 2, 4}};
-        assertEquals(29, Day11.sumMask(grid, 0, 0));
+        assertEquals(29, Day11.sumMask(grid, 0, 0, 3));
     }
 
     @Test
     public void findMax() {
         int [][]grid = {{-2, -4, 4, 4, 4}, {-4, 4, 4, 4, -5}, {4, 3, 3, 4, -4}, {1, 1, 2, 4, -3}, {-1, 0, 2, -5, -2}};
-        assertEquals(2, Day11.findMax(grid).getX());
-        assertEquals(2, Day11.findMax(grid).getY());
+        assertEquals(2, Day11.findMax(grid, 3).pos.getX());
+        assertEquals(2, Day11.findMax(grid, 3).pos.getY());
     }
 
     @Test
     public void findMaxB() {
         int [][]grid = {{4, 4, 4, -5}, {3, 3, 4, -4}, {1, 2, 4, -3}, { 0, 2, -5, -2}};
-        assertEquals(1, Day11.findMax(grid).getX());
-        assertEquals(1, Day11.findMax(grid).getY());
+        assertEquals(1, Day11.findMax(grid, 3).pos.getX());
+        assertEquals(1, Day11.findMax(grid, 3).pos.getY());
+    }
+
+    @Test
+    public void findMaxC() {
+        int [][]grid = {{-2, -4, 4, 4}, {-4, 4, 4, 4}, {4, 3, 3, 4}, {1, 1, 2, 4}, {-1, 0, 2, -5}};
+        assertEquals(2, Day11.findMax(grid, 3).pos.getX());
+        assertEquals(2, Day11.findMax(grid, 3).pos.getY());
     }
 }
