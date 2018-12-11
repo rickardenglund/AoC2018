@@ -4,21 +4,23 @@
 package Advent_of_code_2018;
 
 import Advent_of_code_2018.days.Day;
-import Advent_of_code_2018.days.day9.Day9;
+import Advent_of_code_2018.days.day11.Day11;
 import com.google.common.base.Stopwatch;
 
 public class App {
     private static void run() {
-        Day day = new Day9();
+        Day day = new Day11();
         Stopwatch timer = Stopwatch.createUnstarted();
 
+        String p1Input = day.getInput1();
+        String p2Input = day.getInput2();
         timer.start();
-        Object resultP1 = day.getResultP1(day.getInput1());
+        Object resultP1 = day.getResultP1(p1Input);
         timer.stop();
         String split1 = timer.toString();
         timer.reset();
         timer.start();
-        Object resultP2 = day.getResultP2(day.getInput2());
+        Object resultP2 = day.getResultP2(p2Input);
         timer.stop();
         String split2 = timer.toString();
 

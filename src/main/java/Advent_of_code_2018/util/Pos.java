@@ -51,7 +51,7 @@ public class Pos {
 
     @Override
     public String toString() {
-        return "Pos{" + +x + ", " + y +
+        return "{" + x + ", " + y +
                 '}';
     }
 
@@ -84,5 +84,9 @@ public class Pos {
 
     public int getManhattanDistance(Pos other) {
         return Math.abs(getX() - other.getX()) + Math.abs(getY() - other.getY());
+    }
+
+    public Pos oneIndex() {
+        return new Pos(x +1, y + 1);
     }
 }
