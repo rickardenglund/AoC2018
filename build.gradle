@@ -52,7 +52,7 @@ task generateDay(type: Copy) {
 task genResource(type: Copy) {
     from 'src/template/resources/'
     into 'src/main/resources/input/'
-    rename ('dayXX.txt', 'day' +((LocalDate.now().dayOfMonth) + 2) + '.txt')
+    rename ('dayXX.txt', 'day' + currentDay + '.txt')
 }
 
 task genTest(type: Copy) {
