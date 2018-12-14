@@ -10,7 +10,8 @@ public class Day13Test {
     @Test
     public void p1() {
         Pos expected = new Pos(7,3);
-        String input = "/->-\\        \n" +
+        String input =
+                "/->-\\        \n" +
                 "|   |  /----\\\n" +
                 "| /-+--+-\\  |\n" +
                 "| | |  | v  |\n" +

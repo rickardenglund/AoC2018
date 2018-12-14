@@ -6,6 +6,7 @@ public class Pos {
     private int id;
     private int x;
     private int y;
+    private static boolean yNorthPositive = true;
 
     public Pos(int x, int y) {
         this.x = x;
@@ -24,16 +25,24 @@ public class Pos {
         this.id = id;
     }
 
+    public static void setSouthPositiveY() {
+        yNorthPositive = false;
+    }
+
+    public void step(Direction dir) {
+        walk(dir, 1);
+    }
+
     public void walk(Direction dir, int steps) {
         switch (dir) {
             case NORTH:
-                y += steps;
+                y += (yNorthPositive? steps: -steps);
                 break;
             case EAST:
                 x += steps;
                 break;
             case SOUTH:
-                y -= steps;
+                y -= (yNorthPositive? steps: -steps);
                 break;
             case WEST:
                 x -= steps;
