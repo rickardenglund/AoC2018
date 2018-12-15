@@ -3,6 +3,8 @@ package Advent_of_code_2018.days.day13;
 import Advent_of_code_2018.util.Pos;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 public class Grid {
@@ -12,20 +14,28 @@ public class Grid {
         grid = new Track[width][height];
     }
 
+    Track[][] getGrid() {
+        return grid;
+    }
+
     public void add(int x, int y, Track track) {
         grid[x][y] = track;
     }
 
-    void print() {
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
         for (int y = 0; y < grid[0].length; y++) {
             for (int x = 0; x < grid.length; x++) {
-                System.out.print(grid[x][y].toString());
+                sb.append(grid[x][y].toString());
             }
-            System.out.println();
+            sb.append("\n");
         }
+        return sb.toString();
     }
 
-    public void tick(int currentTick) {
+    public List<Pos> tick(int currentTick) {
+        List<Pos> crashes = new ArrayList<>();
         for (int y = 0; y < grid[0].length; y++) {
             for (int x = 0; x < grid.length; x++) {
                 Optional<Pos> maybeNewPos = grid[x][y].getNewTrainPos(new Pos(x, y), currentTick);
@@ -37,12 +47,37 @@ public class Grid {
                     } catch (RuntimeException e ) {
                         if (e.getMessage().equals("Train Crash")) {
                             System.out.println("Train Crash at : " + newPos);
-                            throw e;
+                            grid[newPos.getX()][newPos.getY()].takeTrain();
+                            crashes.add(newPos);
                         }
                     }
                 }
             }
         }
 
+        return crashes;
+    }
+
+    public long nTrains() {
+        return Arrays.stream(grid).flatMap(Arrays::stream)
+                .filter(track -> track.train.isPresent())
+                .count();
+    }
+
+    public Optional<Pos> getAnyTrainPos() {
+        for (int x = 0; x < grid.length; x++) {
+            for (int y = 0; y < grid[0].length; y++) {
+                if (grid[x][y].train.isPresent()) return Optional.of(new Pos(x, y));
+            }
+        }
+        return Optional.empty();
+    }
+
+    public int getWidth() {
+        return grid.length;
+    }
+
+    public int getHeight() {
+        return grid[0].length;
     }
 }

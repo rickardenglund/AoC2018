@@ -6,12 +6,11 @@ import Advent_of_code_2018.util.Pos;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static Advent_of_code_2018.util.Direction.*;
 
 public class Track {
-    private final List<Direction> exits;
+    final List<Direction> exits;
     Optional<Train> train = Optional.empty();
 
     public Track(char charAt) {
@@ -96,15 +95,13 @@ public class Track {
 
         // crossing
         if (exits.size() == 4) {
-            List<Direction> possibleExits = exits.stream()
-                    .filter(it -> !it.equals(opposite(train.getDirection())))
-                    .collect(Collectors.toList());
-            train.setDirection(possibleExits.get(0)); // TODO fix crossing
+            train.crossingTurn();
+        } else {
+            Direction newDirection = getExit(train);
+            train.setDirection(newDirection);
         }
 
         train.setTick(tick);
-        Direction newDirection = getExit(train);
-        train.setDirection(newDirection);
         this.train = Optional.of(train);
     }
 
