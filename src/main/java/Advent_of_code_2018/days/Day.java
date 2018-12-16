@@ -17,16 +17,21 @@ public interface Day {
     int getDay();
 
     default String getInput1() {
+        List<String> lines = readFile("day" + getDay() + ".txt");
+        return StringUtils.join(lines, "\n");
+    }
+
+    default List<String> readFile(String fileName) {
         List<String> lines;
         try {
             URI uri = ClassLoader.getSystemClassLoader().getResource("input").toURI();
             String path = Paths.get(uri).toString();
 
-            lines = Files.readAllLines(Paths.get(path, "day" + getDay() + ".txt"));
+            lines = Files.readAllLines(Paths.get(path, fileName));
         } catch (IOException | URISyntaxException e) {
             throw new RuntimeException(e);
         }
-        return StringUtils.join(lines, "\n");
+        return lines;
     }
 
     default String getInput2() {
