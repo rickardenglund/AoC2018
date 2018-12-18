@@ -51,9 +51,7 @@ public class Day17Visual extends PApplet {
                 setColor(map[x][y]);
                 strokeWeight(0);
                 rect(x * boxWidth + x * spacing, y * boxWidth + y * spacing, boxWidth, boxWidth);
-
             }
-
         }
 
     }
