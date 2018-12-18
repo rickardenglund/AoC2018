@@ -97,11 +97,5 @@ public class Day14Test {
         assertEquals(list, list2);
     }
 
-    @Test
-    public void reverseElves() {
-        int[] elves = new int[]{1};
-        Day14.reverseElves(elves, 5, 1);
-        assertEquals(0, elves[0]);
-    }
 
 }

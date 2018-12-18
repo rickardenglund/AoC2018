@@ -16,7 +16,7 @@ public class App {
     private static void run() {
         Stopwatch timer = Stopwatch.createUnstarted();
         timer.start();
-        Day day = new Day18();
+        Day day = new Day14();
         timer.stop();
         String setupTime = timer.toString();
         timer.reset();

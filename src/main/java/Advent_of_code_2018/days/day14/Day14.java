@@ -12,63 +12,48 @@ public class Day14 implements Day {
     public Object getResultP1(String input) {
         int afterXRecipes = Integer.parseInt(input);
 
-        int[] elfPositions = new int[]{0, 1};
+        int elf1Pos = 0;
+        int elf2Pos = 1;
         var list = new ArrayList<>(List.of(3, 7));
 
         while (list.size() < afterXRecipes + 10) {
-            List<Integer> newRecipes = createNewRecipes(list.get(elfPositions[0]), list.get(elfPositions[1]));
+            List<Integer> newRecipes = createNewRecipes(list.get(elf1Pos), list.get(elf2Pos));
             list.addAll(newRecipes);
-            updatePositions(elfPositions, list);
-//            System.out.println(list);
-//            System.out.println(Arrays.toString(elfPositions));
+            elf1Pos = (list.get(elf1Pos) + elf1Pos + 1) % list.size();
+            elf2Pos = (list.get(elf2Pos) + elf2Pos + 1) % list.size();
         }
-
-
         return listToString(list.subList(afterXRecipes, afterXRecipes + 10));
     }
 
-    private void updatePositions(int[] elfPositions, List<Integer> list) {
-        for (int i = 0; i < elfPositions.length; i++) {
-            elfPositions[i] = (list.get(elfPositions[i]) + elfPositions[i] + 1) % list.size();
-        }
-    }
-
-    List<Integer> createNewRecipes(Integer a, Integer b) {
+    List<Integer> createNewRecipes(int a, int b) {
         int sum = a + b;
-        return Arrays.stream(Integer.toString(sum).split(""))
-                .map(Integer::parseInt)
-                .collect(Collectors.toList());
+        int singles = sum % 10;
+
+        if (sum > 9) {
+            return List.of(1, singles);
+        }
+        return List.of(singles);
     }
 
     @Override
     public Object getResultP2(String input) {
-        System.out.println(Runtime.getRuntime().maxMemory());
-        int[] elfPositions = new int[]{0, 1};
+        List<Integer> search = Arrays.stream(input.split("")).map(Integer::parseInt).collect(Collectors.toList());
+
+        int elf1Pos = 0;
+        int elf2Pos = 1;
         List<Integer> list = new ArrayList<>(List.of(3, 7));
-        var search = Arrays.stream(input.split("")).map(Integer::parseInt).collect(Collectors.toList());
-
-        for (int i = 0; i < search.size(); i++) {
-            List<Integer> newRecipes = createNewRecipes(list.get(elfPositions[0]), list.get(elfPositions[1]));
-            list.addAll(newRecipes);
-            updatePositions(elfPositions, list);
-        }
-
 
         while (true) {
-            List<Integer> newRecipes = createNewRecipes(list.get(elfPositions[0]), list.get(elfPositions[1]));
-            list.addAll(newRecipes);
-            updatePositions(elfPositions, list);
-            if (list.subList(list.size() - search.size(), list.size()).equals(search)) {
-                return list.size() - search.size();
+            List<Integer> newRecipes = createNewRecipes(list.get(elf1Pos), list.get(elf2Pos));
+            for (Integer r : newRecipes) {
+                list.add(r);
+                if (list.size() > search.size() && list.subList(list.size() - search.size(), list.size()).equals(search)) {
+                    return list.size() - search.size();
+                }
             }
-            if (list.size() % 1_000_000== 0) System.out.println(list.size());
-        }
-    }
 
-    static void reverseElves(int[] elfPositions, int size, int steps) {
-        for (int i = 0; i < elfPositions.length; i++) {
-            elfPositions[i] = (elfPositions[i] + size - steps) % size;
-            if (elfPositions[i] > size - steps) elfPositions[i] -= steps;
+            elf1Pos = (list.get(elf1Pos) + elf1Pos + 1) % list.size();
+            elf2Pos = (list.get(elf2Pos) + elf2Pos + 1) % list.size();
         }
     }
 

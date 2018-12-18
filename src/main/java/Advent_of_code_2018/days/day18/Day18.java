@@ -2,6 +2,9 @@ package Advent_of_code_2018.days.day18;
 
 import Advent_of_code_2018.days.Day;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Day18 implements Day {
     @Override
     public Object getResultP1(String input) {
@@ -23,16 +26,27 @@ public class Day18 implements Day {
 
     @Override
     public Object getResultP2(String input) {
-
+        Map<String, Integer> hashToTick = new HashMap<>();
         Forest forest = Forest.create(input);
-//        forest.print();
-        for (int i = 0; i < 1_000_000_000; i++) {
+        for (int i = 0; i < 512 + ((1_000_000_000 - 512) % 28); i++) {
             forest.tick();
-            if (i % 100_000 == 0) {
-                System.out.println(i);
-                forest.print();
-            }
+
+//            String state = forest.toString();
+//            Integer lastTick = hashToTick.get(state);
+
+//            if (lastTick != null) {
+//                System.out.println("Diff: " + (i - lastTick));
+//                hashToTick.put(state, i);
+//            } else {
+//                hashToTick.put(state, i);
+//            }
+
+//            if (i % 28 == 0) {
+//                System.out.println("I: " + i);
+//                forest.print();
+//            }
         }
+        System.out.println("n: " + (512 + ((1_000_000_000 - 512) % 28)));
         forest.print();
         return getResult(forest);
     }
