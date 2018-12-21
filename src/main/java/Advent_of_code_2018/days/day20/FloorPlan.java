@@ -26,14 +26,23 @@ public class FloorPlan {
         }
     }
 
+    static Set<String> cache = new HashSet<>();
+
+//    static Set<String> createPaths(String toVisit) {
+//        return createPaths(new StringBuilder(toVisit));
+//    }
+
     static Set<String> createPaths(String toVisit) {
+        if (cache.contains(toVisit)) {
+            System.out.println("CacheHit: " + toVisit);
+            return Collections.emptySet();//cache.get(toVisit);
+        }
         Set<String> paths = new HashSet<>();
         int firstParen = toVisit.indexOf("(");
         if (firstParen == -1) {
-            paths.add(toVisit);
+            paths.add(toVisit.toString());
             return paths;
         }
-
 
         int matchingParen = getMatchingParen(toVisit, firstParen);
         String currentPath = toVisit.substring(0, firstParen);
@@ -46,6 +55,7 @@ public class FloorPlan {
                     paths.add(currentPath + path);
                 }
             }
+            cache.add(toVisit);
             return paths;
         } else {
             String parenContent = toVisit.substring(firstParen + 1, matchingParen);
@@ -54,13 +64,14 @@ public class FloorPlan {
             Set<String> list = createPaths(insideParenthesis.substring(paren, matching + 1));
 
             List<String> l2 = list.stream().map(l ->
-            currentPath + "(" + insideParenthesis.substring(0, paren) + l + insideParenthesis.substring(matching) + toVisit.substring(matchingParen + 1))
-            .collect(Collectors.toList());
+                    currentPath + "(" + insideParenthesis.substring(0, paren) + l + insideParenthesis.substring(matching) + toVisit.substring(matchingParen + 1))
+                    .collect(Collectors.toList());
 
             for (var l : l2) {
                 paths.addAll(createPaths(l));
             }
         }
+        cache.add(toVisit);
         return paths;
     }
 
