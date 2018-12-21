@@ -1,5 +1,6 @@
 package Advent_of_code_2018.days.day15;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -33,6 +34,7 @@ public class Day15Test {
     }
 
 
+    @Ignore
     @Test
     public void p1FullExample() {
         int expected = 27730;

@@ -52,64 +52,6 @@ public class Day20Test {
         assertEquals(10,FloorPlan.getMatchingParen(input, 0));
     }
 
-
-    @Test
-    public void getPaths() {
-        String input = "EEWNS";
-        var res = FloorPlan.createPaths(input);
-        assertTrue(res.contains(input));
-    }
-
-    @Test
-    public void getPaths2() {
-        String input = "EEW(NS)WSS";
-        var res = FloorPlan.createPaths(input);
-        assertTrue(res.contains("EEWNSWSS"));
-    }
-
-    @Test
-    public void getPaths3() {
-        String input = "EEW(NS|SE|)";
-        var res = FloorPlan.createPaths(input);
-        assertEquals(3, res.size());
-        assertTrue(res.contains("EEWNS"));
-        assertTrue(res.contains("EEWSE"));
-        assertTrue(res.contains("EEW"));
-    }
-
-    @Test
-    public void getPathsTime() {
-        String input = "WSSEESWWWNW(S|NENNEEEENN(ESSSSW(NWSW|SSEN)|WSWWN(E|WWS(E|SS))))";
-        var res = FloorPlan.createPaths(input);
-    }
-
-    @Test
-    public void getPaths4() {
-        String input = "EEW(NS|SE|)EE";
-        var res = FloorPlan.createPaths(input);
-        assertEquals(3, res.size());
-        assertTrue(res.contains("EEWNSEE"));
-        assertTrue(res.contains("EEWSEEE"));
-        assertTrue(res.contains("EEWEE"));
-    }
-
-    @Test
-    public void getPathsNested() {
-        String input = "E(W|(NS|S))E";
-        var res = FloorPlan.createPaths(input);
-        assertEquals(3, res.size());
-        assertTrue(res.contains("EWE"));
-        assertTrue(res.contains("ENSE"));
-        assertTrue(res.contains("ESE"));
-    }
-
-    @Test
-    public void ptest() {
-        String input = "EEW(NS(SE))(EE)";
-        List<String> res = new ArrayList<>();
-//        FloorPlan.p("", input);
-    }
-
     @Test
     public void split() {
         String[] input = "NS|SE|".split("\\|", -1);

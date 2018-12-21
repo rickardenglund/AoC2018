@@ -15,14 +15,10 @@ public class FloorPlan {
         Pos pos = new Pos(0, 0);
         visit(pos);
 
-
         int i = 1;
         while (input.charAt(i) != '$') {
             i += travel(input.substring(i), pos);
-
         }
-
-
     }
 
     private int travel(String str, Pos pos) {
@@ -49,8 +45,6 @@ public class FloorPlan {
                 i += travel(part.substring(i), pos);
             }
         }
-
-
         return inParen.length() + 2;
     }
 
@@ -79,51 +73,6 @@ public class FloorPlan {
             parts.add(str.substring(partStart));
         }
         return parts;
-    }
-
-    static Set<String> cache = new HashSet<>();
-
-    static Set<String> createPaths(String toVisit) {
-        if (cache.contains(toVisit)) {
-            System.out.println("CacheHit: " + toVisit);
-            return Collections.emptySet();//cache.get(toVisit);
-        }
-        Set<String> paths = new HashSet<>();
-        int firstParen = toVisit.indexOf("(");
-        if (firstParen == -1) {
-            paths.add(toVisit.toString());
-            return paths;
-        }
-
-        int matchingParen = getMatchingParen(toVisit, firstParen);
-        String currentPath = toVisit.substring(0, firstParen);
-        String insideParenthesis = toVisit.substring(firstParen + 1, matchingParen);
-
-        if (insideParenthesis.indexOf('(') == -1) {
-            for (var str : insideParenthesis.split("\\|", -1)) {
-                var more = createPaths(str + toVisit.substring(matchingParen + 1));
-                for (var path : more) {
-                    paths.add(currentPath + path);
-                }
-            }
-            cache.add(toVisit);
-            return paths;
-        } else {
-            String parenContent = toVisit.substring(firstParen + 1, matchingParen);
-            int paren = parenContent.indexOf('(');
-            int matching = getMatchingParen(parenContent, paren);
-            Set<String> list = createPaths(insideParenthesis.substring(paren, matching + 1));
-
-            List<String> l2 = list.stream().map(l ->
-                    currentPath + "(" + insideParenthesis.substring(0, paren) + l + insideParenthesis.substring(matching) + toVisit.substring(matchingParen + 1))
-                    .collect(Collectors.toList());
-
-            for (var l : l2) {
-                paths.addAll(createPaths(l));
-            }
-        }
-        cache.add(toVisit);
-        return paths;
     }
 
     static int getMatchingParen(String dirs, int firstParen) {
