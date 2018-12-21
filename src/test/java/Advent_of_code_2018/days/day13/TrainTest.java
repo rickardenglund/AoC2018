@@ -21,7 +21,7 @@ public class TrainTest {
         assertEquals(EAST, train.getDirection());
 
         train.crossingTurn();
-        assertEquals(EAST, train.getDirection());
+        assertEquals(NORTH, train.getDirection());
 
         train.crossingTurn();
         assertEquals(NORTH, train.getDirection());

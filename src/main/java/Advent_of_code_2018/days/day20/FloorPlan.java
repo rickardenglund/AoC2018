@@ -14,23 +14,74 @@ public class FloorPlan {
     private FloorPlan(String input) {
         Pos pos = new Pos(0, 0);
         visit(pos);
-        String dirs = input.substring(1, input.length() - 1);
-        Set<String> paths = createPaths(dirs);
 
-        for (var path : paths) {
-            pos = new Pos(0, 0);
-            for (var dir : path.toCharArray()) {
-                walk(pos, dir);
-            }
-            System.out.println("Path: " + path);
+
+        int i = 1;
+        while (input.charAt(i) != '$') {
+            i += travel(input.substring(i), pos);
+
         }
+
+
+    }
+
+    private int travel(String str, Pos pos) {
+        if (str.length() == 0) return 0;
+        int visited = 0;
+        if (str.charAt(visited) != '(' && str.charAt(visited) != '$') {
+            char current;
+            while (visited < str.length() && (current = str.charAt(visited)) != '(' && current != '$') {
+                walk(pos, str.charAt(visited));
+                visited++;
+            }
+            return visited;
+        }
+
+        int matchingParen = getMatchingParen(str, 0);
+        String inParen = str.substring(1, matchingParen);
+
+        var parts = split(inParen);
+        Pos start = pos.clone();
+        for (var part : parts) {
+            int i = 0;
+            pos.set(start);
+            while (i < part.length()) {
+                i += travel(part.substring(i), pos);
+            }
+        }
+
+
+        return inParen.length() + 2;
+    }
+
+    private List<String> split(String str) {
+        List<String> parts = new ArrayList<>();
+        int i = 0;
+        int partStart = i;
+        while (i < str.length()) {
+            char current = str.charAt(i);
+            switch (current) {
+                case '(':
+                    int matching = getMatchingParen(str, i);
+                    i = matching + 1;
+                    break;
+                case '|':
+                    parts.add(str.substring(partStart, i));
+                    i++;
+                    partStart = i;
+                    break;
+                default:
+                    i++;
+                    break;
+            }
+        }
+        if (partStart < str.length()) {
+            parts.add(str.substring(partStart));
+        }
+        return parts;
     }
 
     static Set<String> cache = new HashSet<>();
-
-//    static Set<String> createPaths(String toVisit) {
-//        return createPaths(new StringBuilder(toVisit));
-//    }
 
     static Set<String> createPaths(String toVisit) {
         if (cache.contains(toVisit)) {
@@ -123,4 +174,47 @@ public class FloorPlan {
         Pos.setSouthPositiveY();
         return new FloorPlan(input);
     }
+
+    public int getFarthestRoomDistance() {
+        return rooms.values().stream()
+                .mapToInt(Room::getDistance)
+                .max().getAsInt();
+    }
+
+
+
+    public long getRoomsWithNDoors(int nDoors) {
+        return rooms.values().stream()
+                .mapToInt(Room::getDistance)
+                .filter(d -> d >= nDoors)
+                .count();
+    }
+
+    public void calculateDistances() {
+        Set<Pos> visited = new HashSet<>();
+        Deque<Pos> toVisit = new ArrayDeque<>();
+        toVisit.add(new Pos(0, 0));
+
+        while (!toVisit.isEmpty()) {
+            Pos pos = toVisit.poll();
+            visited.add(pos);
+            Room currentRoom = rooms.get(pos);
+
+            List<Pos> neighbours = getNeighbours(pos, currentRoom);
+            neighbours.stream()
+                    .filter(p -> !visited.contains(p))
+                    .peek(toVisit::add)
+                    .map(rooms::get)
+                    .forEach(room -> room.setDistance(currentRoom.getDistance() + 1));
+        }
+    }
+
+    public List<Pos> getNeighbours(Pos pos, Room room) {
+        return room.getDoors().stream().map(dir -> {
+            Pos clone = pos.clone();
+            clone.step(dir);
+            return clone;
+        }).collect(Collectors.toList());
+    }
+
 }

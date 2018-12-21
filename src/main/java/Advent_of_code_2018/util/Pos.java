@@ -1,5 +1,7 @@
 package Advent_of_code_2018.util;
 
+import Advent_of_code_2018.days.day20.Room;
+
 import java.util.Objects;
 
 public class Pos {
@@ -98,4 +100,10 @@ public class Pos {
     public Pos oneIndex() {
         return new Pos(x +1, y + 1);
     }
+
+    public void set(Pos other) {
+        x = other.x;
+        y = other.y;
+    }
+
 }

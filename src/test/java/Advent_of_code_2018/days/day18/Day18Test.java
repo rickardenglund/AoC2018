@@ -23,12 +23,4 @@ public class Day18Test {
         assertEquals(expected, sut.getResultP1(input));
     }
 
-    @Test
-    public void p2() {
-        String expected = "";
-        String input = "";
-        var sut = new Day18();
-        assertEquals(expected, sut.getResultP2(input));
-    }
-
 }

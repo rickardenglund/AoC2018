@@ -2,9 +2,9 @@ package Advent_of_code_2018.days.day21;
 
 import Advent_of_code_2018.days.Day;
 import Advent_of_code_2018.days.day19.CPU;
-import Advent_of_code_2018.days.day19.Day19;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Day21 implements Day {
     private CPU cpu;
@@ -16,7 +16,7 @@ public class Day21 implements Day {
         cpu.setDebug(false);
         cpu.setBreakPoint(28);
 
-        int[] registers = cpu.run();//new int[]{11513432, 0, 0, 0 , 0 ,0});
+        int[] registers = cpu.run();
         return registers[5];
     }
 
