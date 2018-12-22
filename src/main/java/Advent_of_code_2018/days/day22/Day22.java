@@ -98,18 +98,16 @@ public class Day22 implements Day {
         State target = new State(new Pos3D(lines[1].split(" ")[1], depth), Torch);
 
         int length = calculateDistances(start, target);
-        printPath(target);
         return length;
     }
 
-    private void printPath(State target) {
+    void printPath(State target) {
         var cur = visited.stream().filter(s -> s.equals(target)).findFirst().get();
 
         while (cur != null) {
             System.out.println(cur);
             cur = cur.previous;
         }
-
     }
 
     Set<State> visited;
@@ -124,22 +122,28 @@ public class Day22 implements Day {
     }
 
     private int calculateDistances(Queue<State> toVisit, Set<State> visited, State target) {
-
         while (!toVisit.isEmpty() && !visited.contains(target)) {
             State pos = toVisit.poll();
             visited.add(pos);
 
             pos.getNeighbours().stream()
+                    .filter(state -> state.pos.x >= 0)
+                    .filter(state -> state.pos.y >= 0)
                     .filter(state -> !visited.contains(state))
                     .filter(state -> isAllowed(state, target.pos))
                     .peek(state -> state.distance = Optional.of(pos.distance.get() + cost(pos, state)))
                     .peek(state -> state.previous = pos)
-                    .peek(state -> state.estimatedDistance = state.pos.manhattan(target.pos))
+                    .peek(state -> state.estimatedDistance = getEstimated(target, pos, state))
                     .forEach(toVisit::add);
 
             if (pos.equals(target)) return pos.distance.get();
         }
         return -1;
+    }
+
+    private int getEstimated(State target, State current, State next) {
+        int dist = next.pos.manhattan(target.pos);
+        return dist;
     }
 
     private Integer cost(State current, State next) {

@@ -1,9 +1,6 @@
 package Advent_of_code_2018.days.day22;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class State {
@@ -25,17 +22,21 @@ public class State {
 
     public List<State> getNeighbours() {
         List<State> newStates = new ArrayList<>();
-        for (Tool newTool : Tool.values()) {
-            newStates.addAll(List.of(
-                    new State(pos.x + 1, pos.y, pos.depth, newTool),
-                    new State(pos.x - 1, pos.y, pos.depth, newTool),
-                    new State(pos.x, pos.y + 1, pos.depth, newTool),
-                    new State(pos.x, pos.y - 1, pos.depth, newTool)));
-        }
-        return newStates.stream()
-                .filter(state -> state.pos.x >= 0)
-                .filter(state -> state.pos.y >= 0)
-                .collect(Collectors.toList());
+        List<Tool> otherTools = getOtherTools();
+        newStates.addAll(List.of(
+                    new State(pos.x + 1, pos.y, pos.depth, tool),
+                    new State(pos.x - 1, pos.y, pos.depth, tool),
+                    new State(pos.x, pos.y + 1, pos.depth, tool),
+                    new State(pos.x, pos.y - 1, pos.depth, tool),
+                    new State(pos.x, pos.y, pos.depth, otherTools.get(0)),
+                    new State(pos.x, pos.y, pos.depth, otherTools.get(1))
+            ));
+
+        return newStates;
+    }
+
+    private List<Tool> getOtherTools() {
+        return Arrays.stream(Tool.values()).filter(t -> !t.equals(tool)).collect(Collectors.toList());
     }
 
     @Override
@@ -54,6 +55,6 @@ public class State {
 
     @Override
     public String toString() {
-        return pos.toString() + ": " + tool + " d: " + distance + " - " + estimatedDistance;
+        return pos.toString() + ": " + tool + " d: " + distance.get() + " - " + estimatedDistance + " .." + (distance.get() + estimatedDistance);
     }
 }

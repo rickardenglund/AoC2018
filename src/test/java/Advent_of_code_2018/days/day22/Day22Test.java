@@ -1,6 +1,11 @@
 package Advent_of_code_2018.days.day22;
 
+import org.junit.Ignore;
 import org.junit.Test;
+
+import java.util.Comparator;
+import java.util.PriorityQueue;
+import java.util.Queue;
 
 import static org.junit.Assert.*;
 
@@ -57,6 +62,7 @@ public class Day22Test {
         var sut = new Day22();
         String input = sut.getInput1();
         assertEquals(expected, sut.getResultP1(input));
+        System.out.println(sut.toString(new Pos3D(13, 743, 8112)));
     }
 
     @Test
@@ -68,7 +74,14 @@ public class Day22Test {
         assertEquals(expected, sut.getResultP2(input));
     }
 
-
+    @Ignore
+    @Test
+    public void p2Real() {
+        int expected = 1010;
+        String input = "depth: 8112\ntarget: 13,743";
+        var sut = new Day22();
+        assertEquals(expected, sut.getResultP2(input));
+    }
 
     @Test
     public void geoIndex() {
@@ -80,4 +93,5 @@ public class Day22Test {
         assertEquals(17317, sut.calculateGeologicalLevel(new Pos3D(1,0, depth), target));
         assertEquals(1805, sut.calculateGeologicalLevel(new Pos3D(1,1, depth), target));
     }
+
 }
