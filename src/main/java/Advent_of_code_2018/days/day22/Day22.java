@@ -21,16 +21,27 @@ public class Day22 implements Day {
             for (int x = 0; x <= target.x; x++) {
                 Pos3D pos = new Pos3D(x, y, depth);
                 int groundType = getGroundType(pos, target);
-                System.out.print(toChar(groundType));
                 sum += groundType;
             }
-            System.out.println();
-
         }
         return sum;
     }
 
-    private int getGroundType(Pos3D pos, Pos3D target) {
+    public String toString(Pos3D target) {
+        StringBuilder sb = new StringBuilder();
+        for (int y = 0; y <= target.y; y++) {
+            for (int x = 0; x <= target.x; x++) {
+                Pos3D pos = new Pos3D(x, y, target.depth);
+                int groundType = getGroundType(pos, target);
+                sb.append(toChar(groundType));
+            }
+            sb.append("\n");
+
+        }
+        return sb.toString();
+    }
+
+    int getGroundType(Pos3D pos, Pos3D target) {
         return (int) (calculateGeologicalLevel(pos, target) % 3);
     }
 
@@ -87,11 +98,18 @@ public class Day22 implements Day {
         State target = new State(new Pos3D(lines[1].split(" ")[1], depth), Torch);
 
         int length = calculateDistances(start, target);
-        getPath(target);
+        printPath(target);
+        return length;
     }
 
-    private void getPath(State target) {
-        visited.stream().filter(s -> s.)
+    private void printPath(State target) {
+        var cur = visited.stream().filter(s -> s.equals(target)).findFirst().get();
+
+        while (cur != null) {
+            System.out.println(cur);
+            cur = cur.previous;
+        }
+
     }
 
     Set<State> visited;

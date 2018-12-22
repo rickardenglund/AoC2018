@@ -16,6 +16,50 @@ public class Day22Test {
     }
 
     @Test
+    public void p1String() {
+        String expected =
+                ".=.|=.|.|=.\n" +
+                ".|=|=|||..|\n" +
+                ".==|....||=\n" +
+                "=.|....|.==\n" +
+                "=|..==...=.\n" +
+                "=||.=.=||=|\n" +
+                "|.=.===|||.\n" +
+                "|..==||=.|=\n" +
+                ".=..===..=|\n" +
+                ".======|||=\n" +
+                ".===|=|===.\n";
+        var sut = new Day22();
+        assertEquals(expected, sut.toString(new Pos3D(10, 10, 510)));
+    }
+
+    @Test
+    public void p1String2() {
+        String expected =
+                ".=.|=.|.|=.\n" +
+                        ".|=|=|||..|\n" +
+                        ".==|....||=\n" +
+                        "=.|....|.==\n" +
+                        "=|..==...=.\n" +
+                        "=||.=.=||=|\n" +
+                        "|.=.===|||.\n" +
+                        "|..==||=.|=\n" +
+                        ".=..===..=|\n" +
+                        ".======|||=\n" +
+                        ".===|=|===.\n";
+        var sut = new Day22();
+        assertEquals(expected, sut.toString(new Pos3D(10, 10, 510)));
+    }
+
+    @Test
+    public void p1Real() {
+        int expected = 10395;
+        var sut = new Day22();
+        String input = sut.getInput1();
+        assertEquals(expected, sut.getResultP1(input));
+    }
+
+    @Test
     public void p2() {
         int expected = 45;
         String input = "depth: 510\n" +

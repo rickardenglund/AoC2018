@@ -30,9 +30,7 @@ public class State {
                     new State(pos.x + 1, pos.y, pos.depth, newTool),
                     new State(pos.x - 1, pos.y, pos.depth, newTool),
                     new State(pos.x, pos.y + 1, pos.depth, newTool),
-                    new State(pos.x, pos.y - 1, pos.depth, newTool),
-                    new State(pos.x, pos.y, pos.depth + 1, newTool),
-                    new State(pos.x, pos.y, pos.depth - 1, newTool)));
+                    new State(pos.x, pos.y - 1, pos.depth, newTool)));
         }
         return newStates.stream()
                 .filter(state -> state.pos.x >= 0)
