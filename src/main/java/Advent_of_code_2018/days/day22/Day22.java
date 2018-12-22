@@ -31,7 +31,7 @@ public class Day22 implements Day {
     }
 
     private int getGroundType(Pos3D pos, Pos3D target) {
-        return (int)(calculateGeologicalLevel(pos, target) % 3);
+        return (int) (calculateGeologicalLevel(pos, target) % 3);
     }
 
     private String toChar(int groundType) {
@@ -86,11 +86,18 @@ public class Day22 implements Day {
         State start = new State(0, 0, depth, Torch);
         State target = new State(new Pos3D(lines[1].split(" ")[1], depth), Torch);
 
-        return calculateDistances(start, target);
+        int length = calculateDistances(start, target);
+        getPath(target);
     }
 
+    private void getPath(State target) {
+        visited.stream().filter(s -> s.)
+    }
+
+    Set<State> visited;
+
     private int calculateDistances(State start, State target) {
-        Set<State> visited = new HashSet<>();
+        visited = new HashSet<>();
         Queue<State> toVisit = new PriorityQueue<>(Comparator.comparingInt(o -> o.distance.get() + o.estimatedDistance));
         start.distance = Optional.of(0);
         toVisit.add(start);
@@ -108,6 +115,7 @@ public class Day22 implements Day {
                     .filter(state -> !visited.contains(state))
                     .filter(state -> isAllowed(state, target.pos))
                     .peek(state -> state.distance = Optional.of(pos.distance.get() + cost(pos, state)))
+                    .peek(state -> state.previous = pos)
                     .peek(state -> state.estimatedDistance = state.pos.manhattan(target.pos))
                     .forEach(toVisit::add);
 

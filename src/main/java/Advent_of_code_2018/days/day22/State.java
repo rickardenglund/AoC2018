@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 public class State {
     final Pos3D pos;
     final Tool tool;
+    public State previous;
     Optional<Integer> distance = Optional.empty();
     int estimatedDistance = 0;
 
