@@ -1,6 +1,5 @@
 package Advent_of_code_2018.days.day22;
 
-import Advent_of_code_2018.util.Pos;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -18,8 +17,9 @@ public class Day22Test {
 
     @Test
     public void p2() {
-        String expected = "";
-        String input = "";
+        int expected = 45;
+        String input = "depth: 510\n" +
+                "target: 10,10";
         var sut = new Day22();
         assertEquals(expected, sut.getResultP2(input));
     }

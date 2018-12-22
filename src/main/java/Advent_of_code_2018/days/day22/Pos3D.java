@@ -33,4 +33,15 @@ public class Pos3D {
     public int hashCode() {
         return Objects.hash(x, y, depth);
     }
+
+    public int manhattan(Pos3D o) {
+        return Math.abs(x - o.x) +
+                Math.abs(y - o.y) +
+                Math.abs(depth - o.depth);
+    }
+
+    @Override
+    public String toString() {
+        return "(" + x + ", " + y + ", " + depth + ")";
+    }
 }
