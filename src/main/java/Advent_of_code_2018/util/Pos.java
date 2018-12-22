@@ -27,6 +27,11 @@ public class Pos {
         this.id = id;
     }
 
+    public Pos(String s) {
+        x = Integer.parseInt(s.split(",")[0]);
+        y = Integer.parseInt(s.split(",")[1]);
+    }
+
     public static void setSouthPositiveY() {
         yNorthPositive = false;
     }

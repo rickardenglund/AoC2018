@@ -12,13 +12,14 @@ import Advent_of_code_2018.days.day17.Day17;
 import Advent_of_code_2018.days.day18.Day18;
 import Advent_of_code_2018.days.day19.Day19;
 import Advent_of_code_2018.days.day20.Day20;
+import Advent_of_code_2018.days.day22.Day22;
 import com.google.common.base.Stopwatch;
 
 public class App {
     private static void run() {
         Stopwatch timer = Stopwatch.createUnstarted();
         timer.start();
-        Day day = new Day20();
+        Day day = new Day22();
         timer.stop();
         String setupTime = timer.toString();
         timer.reset();
