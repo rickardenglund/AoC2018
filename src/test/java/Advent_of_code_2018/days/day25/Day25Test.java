@@ -1,5 +1,6 @@
 package Advent_of_code_2018.days.day25;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -38,6 +39,7 @@ public class Day25Test {
         assertEquals(expected, sut.getResultP1(input));
     }
 
+    @Ignore
     @Test
     public void p2() {
         String expected = "";
