@@ -36,7 +36,6 @@ public class Team {
     }
 
     public Map<Group, Optional<Group>> selectTargets(Team otherTeam) {
-
         Map<Group, Optional<Group>> targets = new HashMap<>();
         List<Group> selectedGroups = new ArrayList<>();
         List<Group> selectorsSorted = groups.stream()
@@ -45,14 +44,12 @@ public class Team {
                 .collect(Collectors.toList());
 
         for (var group: selectorsSorted) {
-            List<Group> list = otherTeam.groups.stream()
+            Optional<Group> target = otherTeam.groups.stream()
                     .filter(it -> !selectedGroups.contains(it))
                     .sorted(Comparator.comparingInt(Group::getInitiative).reversed())
                     .sorted(Comparator.comparingInt(Group::getEffectivePower).reversed())
                     .sorted(Comparator.comparingInt(group::potentialDamage).reversed())
-                    .collect(Collectors.toList());
-
-            Optional<Group> target = list.stream().findFirst();
+                    .findFirst();
 
             target.ifPresent(selectedGroups::add);
             targets.put(group, target);

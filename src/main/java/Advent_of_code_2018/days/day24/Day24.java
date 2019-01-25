@@ -70,21 +70,23 @@ public class Day24 implements Day {
 
     @Override
     public Object getResultP2(String input) {
-        int boost = 38;
+        int boost = 0;
         Team team1;
         Team team2;
         do {
             boost += 1;
 //            if (boost % 1000 == 0)
-            System.out.println(boost);
+//            System.out.println(boost);
             List<Team> teams = ParseSystem(input);
             team1 = teams.get(0);
             team1.applyBoost(boost);
             team2 = teams.get(1);
 
             fight(team1, team2);
-        } while (!(team1.isAlive() && !team2.isAlive()));
+        } while ((team2.isAlive()));
 
+        System.out.println("t1: " + team1.getArmySize());
+        System.out.println("t2: " + team2.getArmySize());
         return team1.getArmySize() + team2.getArmySize();
     }
 

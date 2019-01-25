@@ -44,4 +44,16 @@ public class Pos3D {
     public String toString() {
         return "(" + x + ", " + y + ", " + depth + ")";
     }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public int getDepth() {
+        return depth;
+    }
 }
